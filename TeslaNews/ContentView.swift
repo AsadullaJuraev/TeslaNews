@@ -6,75 +6,114 @@
 //
 
 import SwiftUI
-import CoreData
+import SDWebImageSwiftUI
+import SwiftyJSON
+import WebKit
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
-
+    
+    @ObservedObject var list = getData()
+    
     var body: some View {
-        List {
-            ForEach(items) { item in
-                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-            }
-            .onDelete(perform: deleteItems)
-        }
-        .toolbar {
-            #if os(iOS)
-            EditButton()
-            #endif
-
-            Button(action: addItem) {
-                Label("Add Item", systemImage: "plus")
-            }
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+        
+        NavigationView{
+            
+            List(list.datas) { i in
+                
+                NavigationLink(destination:
+                                webView(url: i.url)
+                                .navigationBarTitle("", displayMode: .inline)
+                ) {
+                    HStack{
+                        
+                        VStack(alignment: .leading, spacing: 10){
+                            
+                            Text(i.title).fontWeight(.heavy)
+                            Text(i.desc).lineLimit(2)
+                        }
+                        
+                        if i.image.contains("http") {
+                            //if i.image != "" {
+                                WebImage(url: URL(string: i.image)!, options: .highPriority, context: nil)
+                                    .resizable().scaledToFill()
+                                    .frame(width: 110, height: 135)
+                                    .cornerRadius(20)
+                            //}
+                        }
+                        
+                    }.padding(.vertical, 15)
+                }
+                
+            }//: LIST
+            .navigationBarTitle("Tesla News")
         }
     }
+    
 }
-
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        ContentView()
     }
+}
+
+struct dataType: Identifiable{
+    
+    var id: String
+    var title: String
+    var desc: String
+    var url: String
+    var image: String
+}
+
+class getData: ObservableObject{
+    
+    @Published var datas = [dataType]()
+    
+    init() {
+        
+        let source = "https://newsapi.org/v2/everything?q=tesla&from=2021-04-18&language=ru&sortBy=publishedAt&apiKey=3b9ca2f12fbe4572832666e77f41dd04"
+        
+        let url = URL(string: source)!
+        
+        let session = URLSession(configuration: .default)
+        
+        session.dataTask(with: url){ (data, _, err) in
+            if err != nil {
+                print((err?.localizedDescription)!)
+                return
+            }
+            let json = try! JSON(data: data!)
+            
+            for i in json["articles"]{
+                let title = i.1["title"].stringValue
+                let description = i.1["description"].stringValue
+                let url = i.1["url"].stringValue
+                let image = i.1["urlToImage"].stringValue
+                let id = i.1["publishedAt"].stringValue
+                DispatchQueue.main.async {
+                    self.datas.append(dataType(id: id, title: title, desc: description, url: url, image: image))
+                }
+                
+            }
+        }
+        .resume()
+    }
+}
+
+struct webView: UIViewRepresentable {
+
+    var url: String
+    
+    func makeUIView(context: UIViewRepresentableContext<webView>) -> WKWebView {
+        
+        let view = WKWebView()
+        view.load(URLRequest(url: URL(string: url)!))
+        return view
+    }
+    
+    func updateUIView(_ uiView: WKWebView, context: UIViewRepresentableContext<webView>) {
+        
+    }
+   
 }

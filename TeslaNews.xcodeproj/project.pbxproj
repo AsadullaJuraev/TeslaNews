@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,8 +11,9 @@
 		F3C360C42654339E008926E1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C360C32654339E008926E1 /* ContentView.swift */; };
 		F3C360C6265433A4008926E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C360C5265433A4008926E1 /* Assets.xcassets */; };
 		F3C360C9265433A4008926E1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C360C8265433A4008926E1 /* Preview Assets.xcassets */; };
-		F3C360CB265433A4008926E1 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C360CA265433A4008926E1 /* Persistence.swift */; };
 		F3C360CE265433A4008926E1 /* TeslaNews.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F3C360CC265433A4008926E1 /* TeslaNews.xcdatamodeld */; };
+		F3C360D726543476008926E1 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = F3C360D626543476008926E1 /* SwiftyJSON */; };
+		F3C360DA26543545008926E1 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = F3C360D926543545008926E1 /* SDWebImageSwiftUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,7 +22,6 @@
 		F3C360C32654339E008926E1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F3C360C5265433A4008926E1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F3C360C8265433A4008926E1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		F3C360CA265433A4008926E1 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		F3C360CD265433A4008926E1 /* TeslaNews.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TeslaNews.xcdatamodel; sourceTree = "<group>"; };
 		F3C360CF265433A4008926E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -31,6 +31,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3C360DA26543545008926E1 /* SDWebImageSwiftUI in Frameworks */,
+				F3C360D726543476008926E1 /* SwiftyJSON in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,7 +61,6 @@
 				F3C360C12654339E008926E1 /* TeslaNewsApp.swift */,
 				F3C360C32654339E008926E1 /* ContentView.swift */,
 				F3C360C5265433A4008926E1 /* Assets.xcassets */,
-				F3C360CA265433A4008926E1 /* Persistence.swift */,
 				F3C360CF265433A4008926E1 /* Info.plist */,
 				F3C360CC265433A4008926E1 /* TeslaNews.xcdatamodeld */,
 				F3C360C7265433A4008926E1 /* Preview Content */,
@@ -91,6 +92,10 @@
 			dependencies = (
 			);
 			name = TeslaNews;
+			packageProductDependencies = (
+				F3C360D626543476008926E1 /* SwiftyJSON */,
+				F3C360D926543545008926E1 /* SDWebImageSwiftUI */,
+			);
 			productName = TeslaNews;
 			productReference = F3C360BE2654339E008926E1 /* TeslaNews.app */;
 			productType = "com.apple.product-type.application";
@@ -118,6 +123,10 @@
 				Base,
 			);
 			mainGroup = F3C360B52654339E008926E1;
+			packageReferences = (
+				F3C360D526543476008926E1 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				F3C360D826543545008926E1 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+			);
 			productRefGroup = F3C360BF2654339E008926E1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -145,7 +154,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3C360CE265433A4008926E1 /* TeslaNews.xcdatamodeld in Sources */,
-				F3C360CB265433A4008926E1 /* Persistence.swift in Sources */,
 				F3C360C42654339E008926E1 /* ContentView.swift in Sources */,
 				F3C360C22654339E008926E1 /* TeslaNewsApp.swift in Sources */,
 			);
@@ -336,6 +344,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F3C360D526543476008926E1 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+		F3C360D826543545008926E1 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F3C360D626543476008926E1 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F3C360D526543476008926E1 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+		F3C360D926543545008926E1 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F3C360D826543545008926E1 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		F3C360CC265433A4008926E1 /* TeslaNews.xcdatamodeld */ = {
